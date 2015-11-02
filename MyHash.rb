@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require_relative "LinkedList.rb"
 
 class MyHash
@@ -35,3 +37,4 @@ class MyHash
 		return array
 	end
 end
+

@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require_relative "MyHash.rb"
 require_relative "LinkedList.rb"
 require "test/unit"
