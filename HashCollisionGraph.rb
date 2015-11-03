@@ -20,7 +20,6 @@ class CollisionGraph < Qt::Widget
         resize(winWidth, winHeight)
         move(winX, winY)
 
-        show
     end
     
     
