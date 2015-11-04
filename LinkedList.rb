@@ -19,7 +19,6 @@ class LinkedList
 	end
 
 	def insert(key,value)
-	#inserts an elemnt into the head of the list
 		node = Node.new(key,value)
 
 		if (@head == nil && @tail == nil)
@@ -35,17 +34,17 @@ class LinkedList
 	end
 
 	def delete(key)
-		#find the node
 		node = self.search(key)
 
-		#delete it
-		if (node.next != nil)
-			node.next.prev = node.prev
-		elsif (node.prev != nil)
-			node.prev.next = node.next
-		else
-			@head = nil
-			@tail = nil
+		if node
+			if (node.next != nil)
+				node.next.prev = node.prev
+			elsif (node.prev != nil)
+				node.prev.next = node.next
+			else
+				@head = nil
+				@tail = nil
+			end
 		end
 
 		return node
@@ -64,7 +63,6 @@ class LinkedList
 	end
 
 	def search(key)
-	#search for a specific node in the list given its key
 		node = @head
 		while(node != nil && node.key != key)
 			node = node.next

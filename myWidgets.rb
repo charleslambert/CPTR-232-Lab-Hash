@@ -3,6 +3,7 @@ require 'Qt'
 class MyValueBox < Qt::Widget
 	def initialize(label, mode)
 		super()
+
 		@mode = mode
 
 		grid = Qt::GridLayout.new(self)
@@ -10,7 +11,7 @@ class MyValueBox < Qt::Widget
 		@label = Qt::Label.new(label, self)
 		if @mode == :spin
 			@box = Qt::SpinBox.new do |i|
-				i.range = 1...20
+				i.range = 1..1000
         		i.singleStep = 1
         	end
         elsif @mode == :text
@@ -21,12 +22,22 @@ class MyValueBox < Qt::Widget
         grid.addWidget(@box, 0, 1, 1, 3)
 	end
 
-	def value
-		if @mode == :text
-			value = @box.text.to_f
-		else
-			value = @box.value
+	def value(*set)
+		case set.length
+		when 0
+			if @mode == :text
+				value = @box.text.to_f
+			else
+				value = @box.value
+			end
+				return value
+		when 1
+			set = set.first
+			if @mode == :text
+				@box.text = set
+			else
+				@box.value = set
+			end
 		end
-			return value
 	end
 end

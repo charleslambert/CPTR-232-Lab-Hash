@@ -5,28 +5,21 @@ class CollisionGraph < Qt::Widget
 
     def initialize
         super
+
         setWindowTitle("Collision Graph")
-        winWidth = 350
-        winHeight = 280
-        winX = 670
-        winY = 300
 
-        @colorFactor = 20
-        @recXSep = 20
+        @colorFactor = 5
+        @recXsep = 5
         @recHeightFactor = -5
-        @recY = 110
-        @recWidth = 10
-
-        resize(winWidth, winHeight)
-        move(winX, winY)
+        @colorMax = 250
 
     end
     
     
     def paintEvent(event)
-          painter = Qt::Painter.new(self)
-          drawShapes(painter)
-          painter.end
+          @painter = Qt::Painter.new(self)
+          drawShapes(@painter)
+          @painter.end
     end
 
     
@@ -34,25 +27,22 @@ class CollisionGraph < Qt::Widget
         update()
         painter.setRenderHint Qt::Painter::Antialiasing
 
+        recWidth = (width()/$colA.length)-@recXsep unless not $colA 
         #simple incrementor for spacing of bars
         i = 0
 
         $colA.each { |count| 
             #condition to keep the color variable within bounds
-                if (count*@colorFactor) <= 150
+                if (count*@colorFactor) <= @colorMax
                     color = count*@colorFactor
                 else
-                    color = 150
+                    color = @colorMax
                 end
                 #create rectangle with color and size based on 
-                painter.setBrush Qt::Brush.new Qt::Color.new(color, 0, 150-color)
-                painter.drawRect(10+i*@recXSep, @recY, @recWidth, count*@recHeightFactor)
+                painter.setBrush Qt::Brush.new Qt::Color.new(color, 0, @colorMax-color)
+                painter.drawRect(i*(recWidth+@recXsep), height(), recWidth, count*@recHeightFactor)
 
                 i += 1
         } unless $colA == nil
-    end
-
-    def resizeWin(height)
-
     end
 end
