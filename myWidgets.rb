@@ -6,12 +6,13 @@ class MyValueBox < Qt::Widget
 
 		@mode = mode
 
+
 		grid = Qt::GridLayout.new(self)
 
 		@label = Qt::Label.new(label, self)
 		if @mode == :spin
 			@box = Qt::SpinBox.new do |i|
-				i.range = 1..1000
+				i.range = 1..(1<<31-1)
         		i.singleStep = 1
         	end
         elsif @mode == :text

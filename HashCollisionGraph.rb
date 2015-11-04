@@ -10,8 +10,8 @@ class CollisionGraph < Qt::Widget
 
         @colorFactor = 5
         @recXsep = 5
-        @recHeightFactor = -5
         @colorMax = 250
+        @recHeightFactor = -5
 
     end
     
@@ -31,6 +31,14 @@ class CollisionGraph < Qt::Widget
         #simple incrementor for spacing of bars
         i = 0
 
+        if $colA
+            if ($colA.max*@recHeightFactor) > height()
+                recHeightFactor = height()/$colA.max
+            else
+                recHeightFactor = @recHeightFactor
+            end
+        end
+
         $colA.each { |count| 
             #condition to keep the color variable within bounds
                 if (count*@colorFactor) <= @colorMax
@@ -40,7 +48,7 @@ class CollisionGraph < Qt::Widget
                 end
                 #create rectangle with color and size based on 
                 painter.setBrush Qt::Brush.new Qt::Color.new(color, 0, @colorMax-color)
-                painter.drawRect(i*(recWidth+@recXsep), height(), recWidth, count*@recHeightFactor)
+                painter.drawRect(i*(recWidth+@recXsep), height(), recWidth, count*recHeightFactor)
 
                 i += 1
         } unless $colA == nil

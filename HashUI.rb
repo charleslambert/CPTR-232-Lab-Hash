@@ -7,7 +7,7 @@ require_relative "myWidgets.rb"
 
 class HashUI < Qt::Widget
 
-    slots('createHash()', 'insert()', 'delete()', 'search()', 'hashRandom()')
+    slots('createHash()', 'insert()', 'delete()', 'search()', 'hashRandom()', 'hashSeq()')
 
     def initialize
         super
@@ -17,7 +17,8 @@ class HashUI < Qt::Widget
         init_ui
         connections
 
-        setFixedSize(600, 400)
+        #setFixedSize(600, 500)
+        resize(600,500)
         move(300, 300)
 
         show
@@ -29,7 +30,7 @@ class HashUI < Qt::Widget
     	#create spinbox/label widgets
         @pBox = MyValueBox.new("p = ", :spin)
         @wBox = MyValueBox.new("w = ", :spin)
-        @aBox = MyValueBox.new("a = ", :text)
+        @aBox = MyValueBox.new("A = ", :text)
         @kBox = MyValueBox.new("key = ", :spin)
         @vBox = MyValueBox.new("value = ", :text)
         @nkBox = MyValueBox.new("# of keys", :spin)
@@ -42,6 +43,7 @@ class HashUI < Qt::Widget
         @deleteVal = Qt::PushButton.new("Delete", self)
         @searchVal = Qt::PushButton.new("Search")
         @HashRandom = Qt::PushButton.new("Hash Random Value Set")
+        @HashSeq = Qt::PushButton.new("Hash Sequential Value Set")
 
         #place the line 
         @hBBox = Qt::HBoxLayout.new do |i|
@@ -61,6 +63,7 @@ class HashUI < Qt::Widget
             i.addWidget(@nkBox)
             i.addWidget(@dBox)
             i.addWidget(@HashRandom)
+            i.addWidget(@HashSeq)
             i.addWidget(@quit)
         end
 
@@ -78,11 +81,14 @@ class HashUI < Qt::Widget
         connect(@deleteVal, SIGNAL('clicked()'), self, SLOT(:delete))
         connect(@searchVal, SIGNAL('clicked()'), self, SLOT(:search))
         connect(@HashRandom, SIGNAL('clicked()'), self, SLOT(:hashRandom))
+        connect(@HashSeq, SIGNAL('clicked()'), self, SLOT(:hashSeq))
     end
 
     def createHash()
-        @hash = MyHash.new(@pBox.value,@wBox.value,@aBox.value)
-        $colA = @hash.hashArray
+        if @aBox.value
+            @hash = MyHash.new(@pBox.value,@wBox.value,@aBox.value)
+            $colA = @hash.hashArray
+        end
     end
 
     def delete()
@@ -115,6 +121,17 @@ class HashUI < Qt::Widget
             @nkBox.value.times do
                 sleep(@dBox.value/10)
                 @hash.insert(random.rand(100), random.rand(100))
+                $colA = @hash.hashArray
+                @graph.repaint()
+            end
+        end
+    end
+
+    def hashSeq()
+        if @hash
+            for i in 1..@nkBox.value
+                sleep(@dBox.value/10)
+                @hash.insert(i, 0)
                 $colA = @hash.hashArray
                 @graph.repaint()
             end
